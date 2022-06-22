@@ -36,7 +36,11 @@ public class AdminController {
     }
     @GetMapping(value="/delete_form")
     public String getDeleteForm(@RequestParam(value="id") long id, ModelMap model) {
-           model.addAttribute("user", userService.getUser(id));
+        User user = (User)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        List<User> userList = userService.getUserList();
+        model.addAttribute("current", user);
+        model.addAttribute("users", userList);
+        model.addAttribute("user", userService.getUser(id));
         return "delete_form";
     }
     @GetMapping(value="/delete")
@@ -50,11 +54,13 @@ public class AdminController {
         userService.addUser(user);
         return allUsersList(model);
     }
-    @GetMapping(value = "/redact")
+    @GetMapping(value = "/edit_form")
     public String redactionForm(@RequestParam(value="id") long id, ModelMap model) {
-        if (id != -1) {
-            model.addAttribute("user", userService.getUser(id));
-        }
+        User user = (User)(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        List<User> userList = userService.getUserList();
+        model.addAttribute("current", user);
+        model.addAttribute("users", userList);
+        model.addAttribute("user", userService.getUser(id));
         return "edit_form";
     }
     @GetMapping(value = "/do_redact")
