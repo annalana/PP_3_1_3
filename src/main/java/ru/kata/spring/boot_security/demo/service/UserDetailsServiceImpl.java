@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user != null) {
             return user;
         } else {
-            return null;
+            throw new BadCredentialsException("Wrong username");
         }
     }
 }
